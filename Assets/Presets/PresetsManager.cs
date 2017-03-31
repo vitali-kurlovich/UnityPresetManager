@@ -6,9 +6,8 @@ using UnityEditor;
 
 public class PresetsManager  {
 	
-	private PresetInfoCollection m_presets;
-
-	protected static PresetsManager m_sharedManager = null;
+	private PresetInfoCollection m_presets = new PresetInfoCollection ();
+	private static PresetsManager m_sharedManager = null;
 
 	public static PresetsManager sharedManager() {
 		if (m_sharedManager == null) {
@@ -48,11 +47,8 @@ public class PresetsManager  {
 			AssetDatabase.Refresh ();
 		}
 	}
-
-
+		
 	public PresetInfo PresetInfoForID(int presetID) {
-		if (m_presets == null)
-			return null;
 		return m_presets.FindByID(presetID);
 	}
 
@@ -60,31 +56,22 @@ public class PresetsManager  {
 		if (name == null || name.Length == 0)
 			return null;
 
-		if (m_presets == null) {
-			m_presets = new PresetInfoCollection ();
-		}
-
 		if (m_presets.ContainPresetInfoWithName (name))
 			return null;
 
-		PresetInfo preset = new PresetInfo (name, m_presets.Count + 1);
+		PresetInfo preset = new PresetInfo (name, m_presets.MaxPresetID + 1);
 		m_presets.Add (preset);
+
 		return preset;
 	}
 
 	public int Count {
 		get {
-			if (m_presets == null)
-				return 0;
 			return m_presets.Count;
 		}
 	}
 
 	public PresetInfo PresetAtIndex(int index) {
-
-		if (m_presets == null)
-			return null;
-
 		if (index >= 0 && index < m_presets.Count) {
 			return m_presets[index];
 		}

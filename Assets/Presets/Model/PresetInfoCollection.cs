@@ -25,7 +25,8 @@ public sealed class PresetInfoCollection : UnityEngine.Object
 	}
 
 	public void Add(PresetInfo info) {
-
+		if (info == null)
+			return;
 		if (m_items == null) {
 			m_items = new List<PresetInfo>();
 		}
@@ -67,6 +68,20 @@ public sealed class PresetInfoCollection : UnityEngine.Object
 
 	public bool ContainPresetInfoWithID(int presetID) {
 		return FindByID(presetID) != null;
+	}
+
+	public int MaxPresetID {
+		get {
+			if (m_items == null)
+				return 0;
+			int maxID = 0;
+			foreach (PresetInfo p in m_items) {
+				if (p.PresetID > maxID) {
+					maxID = p.PresetID;
+				}
+			}
+			return maxID;
+		}
 	}
 
 	public override string ToString ()
