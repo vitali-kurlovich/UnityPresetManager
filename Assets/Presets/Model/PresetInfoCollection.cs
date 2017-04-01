@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public sealed class PresetInfoCollection : UnityEngine.Object
+public sealed class PresetInfoCollection :  ScriptableObject
 {
 	[SerializeField]
 	private List<PresetInfo> m_items;

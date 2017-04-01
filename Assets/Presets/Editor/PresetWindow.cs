@@ -13,6 +13,7 @@ public class PresetWindow : EditorWindow {
 
 		Texture2D texture = new Texture2D(1, 1);
 		style.normal.background = texture;
+		style.active.background = Texture2D.whiteTexture;
 	}
 		
 	void OnGUI () {
@@ -50,6 +51,10 @@ public class PresetWindow : EditorWindow {
 		EditorGUILayout.BeginHorizontal ();
 		GUILayout.FlexibleSpace ();
 		if (GUILayout.Button ("New",  GUILayout.MinWidth(80))) {
+			
+			var info = manager.CreateNewPreset (manager.UniqueNameForPreset());
+			manager.AddPreset (info);
+			manager.SavePreset ();
 		}
 
 		EditorGUILayout.EndHorizontal ();
