@@ -20,8 +20,7 @@ public static class PresetUtils  {
 			preset.meshRenderPreset.ApplyPresetToComponent (meshRender);
 		}
 	}
-
-
+		
 	public static void fillPreset(this MonoBehaviour comp, GameObjectPreset preset) {
 
 		if (preset == null ) {
