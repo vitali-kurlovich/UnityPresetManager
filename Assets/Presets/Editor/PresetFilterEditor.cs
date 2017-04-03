@@ -44,25 +44,31 @@ public class PresetFilterEditor : Editor {
 		}
 
 		EditorGUILayout.EndHorizontal();
-		EditorGUILayout.BeginHorizontal();
 
-		GUI.enabled = ( filter.ActivePreset != null && filter.ActivePreset.saved);
+		if (filter.ActivePresetInfo != null) {
 
-		if (GUILayout.Button ("Load")) {
-			filter.applyPreset (filter.ActivePreset);
-		}
+			EditorGUILayout.BeginHorizontal ();
+
+			GUI.enabled = (filter.ActivePreset != null && filter.ActivePreset.saved);
+
+			if (GUILayout.Button ("Load")) {
+				filter.applyPreset (filter.ActivePreset);
+			}
 			
-		GUI.enabled =  filter.ActivePresetInfo != null && filter.ActivePreset != null && filter.HasPresetChanges(filter.ActivePreset);
-		if (GUILayout.Button ("Save")) {
-			var preset = new GameObjectPreset ();
-			filter.fillPreset(preset);
+			GUI.enabled = filter.ActivePreset != null && filter.HasPresetChanges (filter.ActivePreset);
+			if (GUILayout.Button ("Save")) {
+				var preset = new GameObjectPreset ();
+				filter.fillPreset (preset);
 
-			filter.SetPreset (preset, filter.ActivePresetInfo);
+				filter.SetPreset (preset, filter.ActivePresetInfo);
+			}
+
+			GUI.enabled = true;
+
+			EditorGUILayout.EndHorizontal ();
 		}
 
-		GUI.enabled = true;
 
-		EditorGUILayout.EndHorizontal();
 		EditorGUILayout.EndVertical ();
 	}
 
