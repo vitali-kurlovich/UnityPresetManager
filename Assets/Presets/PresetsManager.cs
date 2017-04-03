@@ -46,7 +46,15 @@ public class PresetsManager  {
 	}
 
 	public void SetActivePressetToScene(PresetInfo info) {
-	
+		var filters = m_sceneScanner.Scan ();
+
+		foreach (PresetFilter pf in filters) {
+			pf.ActivePresetInfo = info;
+		}
+	}
+
+	public void ApplyPressetToScene(PresetInfo info) {
+
 		var filters = m_sceneScanner.Scan ();
 
 		foreach (PresetFilter pf in filters) {
@@ -54,7 +62,7 @@ public class PresetsManager  {
 			pf.applyPreset (pf.ActivePreset);
 		}
 	}
-
+		
 	public List<PresetFilter> FilterPresetFilterByPresetID(List<PresetFilter> list, int presetID) {
 		var result = new List<PresetFilter> ();
 		foreach (PresetFilter pf in list) {

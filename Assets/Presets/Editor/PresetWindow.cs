@@ -41,7 +41,7 @@ public class PresetWindow : EditorWindow {
 			//}
 
 			if (GUILayout.Button ("Apply")) {
-				manager.SetActivePressetToScene (info);
+				manager.ApplyPressetToScene (info);
 			}
 
 			EditorGUILayout.EndHorizontal ();

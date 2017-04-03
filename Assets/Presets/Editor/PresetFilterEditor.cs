@@ -6,11 +6,8 @@ using UnityEditor;
 [CustomEditor(typeof(PresetFilter))]
 public class PresetFilterEditor : Editor {
 
-	//GUILayout.Button("Create")
 	public override void OnInspectorGUI()
 	{
-		//base.OnInspectorGUI();
-
 		var manager = PresetsManager.sharedManager ();
 
 		PresetFilter filter = (PresetFilter)target;
@@ -28,11 +25,9 @@ public class PresetFilterEditor : Editor {
 				currentPresetIndex = index + 1;
 			}
 		}
-
 	
 		EditorGUILayout.BeginVertical ();
 		EditorGUILayout.BeginHorizontal();
-
 
 		int popupIndex = EditorGUILayout.Popup ("Preset:", 
 				                 currentPresetIndex, options, EditorStyles.popup);

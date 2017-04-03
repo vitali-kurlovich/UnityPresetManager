@@ -40,6 +40,8 @@ public class NewPrestWizard : EditorWindow {
 			var info = manager.CreateNewPreset (m_infoName);
 			manager.AddPreset (info);
 			manager.SavePreset ();
+
+			manager.SetActivePressetToScene (info);
 			Close();
 		}
 
