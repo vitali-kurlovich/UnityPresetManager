@@ -28,14 +28,14 @@ public class PresetFilterEditor : Editor {
 				currentPresetIndex = index + 1;
 			}
 		}
-			
+
+	
 		EditorGUILayout.BeginVertical ();
 		EditorGUILayout.BeginHorizontal();
 
 
 		int popupIndex = EditorGUILayout.Popup ("Preset:", 
 				                 currentPresetIndex, options, EditorStyles.popup);
-
 
 		if (popupIndex != currentPresetIndex) {
 			if (popupIndex == 0) {
@@ -46,20 +46,18 @@ public class PresetFilterEditor : Editor {
 				currentPresetInfo = manager.PresetAtIndex (popupIndex - 1);
 				filter.ActivePresetInfo = currentPresetInfo;
 			}
-
 		}
-		
-			
+
 		EditorGUILayout.EndHorizontal();
 		EditorGUILayout.BeginHorizontal();
 
-		GUI.enabled = (filter.ActivePreset != null && filter.ActivePreset.saved);
+		GUI.enabled = ( filter.ActivePreset != null && filter.ActivePreset.saved);
 
 		if (GUILayout.Button ("Load")) {
 			filter.applyPreset (filter.ActivePreset);
 		}
 			
-		GUI.enabled =  filter.ActivePreset != null && filter.HasPresetChanges(filter.ActivePreset);
+		GUI.enabled =  filter.ActivePresetInfo != null && filter.ActivePreset != null && filter.HasPresetChanges(filter.ActivePreset);
 		if (GUILayout.Button ("Save")) {
 			var preset = new GameObjectPreset ();
 			filter.fillPreset(preset);

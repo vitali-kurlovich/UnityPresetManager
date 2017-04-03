@@ -25,11 +25,12 @@ public class PresetFilter : MonoBehaviour {
 				m_activePreset = null;
 				return;
 			}
-
-			foreach (GameObjectPresetPair p in m_presets) {
-				if (p.PresetID == value.PresetID) {
-					m_activePreset = p;
-					return;
+			if (m_presets != null) {
+				foreach (GameObjectPresetPair p in m_presets) {
+					if (p.PresetID == value.PresetID) {
+						m_activePreset = p;
+						return;
+					}
 				}
 			}
 			m_activePreset = new GameObjectPresetPair (null, value.PresetID);
