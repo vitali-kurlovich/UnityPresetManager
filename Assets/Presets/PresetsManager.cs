@@ -10,6 +10,8 @@ public class PresetsManager  {
 	private PresetInfoCollection m_presets;
 	private static PresetsManager m_sharedManager = null;
 
+	private SceneScanner m_sceneScanner = new SceneScanner();
+
 	protected PresetInfoCollection Presets {
 		get {
 			if (m_presets == null) {
@@ -22,20 +24,44 @@ public class PresetsManager  {
 	public static PresetsManager sharedManager() {
 		if (m_sharedManager == null) {
 			m_sharedManager = new PresetsManager ();
-
 			m_sharedManager.LoadPreset ();
+			m_sharedManager.ScanScene ();
 		}
-	
 		return m_sharedManager;
 	}
-
-
+		
 	public void ScanScene() {
-	
+		var result = m_sceneScanner.Scan ();
 
+		var ids = new HashSet<int> ();
+		foreach (var filter in result) {
+			var presetIDs = filter.SupportedPresetIDs;
 
+			if (presetIDs == null)
+				continue;
+			foreach (int id in presetIDs) {
+				ids.Add (id);
+			}
+		}
 	}
 
+	public void SetActivePressetToScene(PresetInfo info) {
+	
+		var filters = m_sceneScanner.Scan ();
+
+		foreach (PresetFilter pf in filters) {
+			pf.ActivePresetInfo = info;
+			pf.applyPreset (pf.ActivePreset);
+		}
+	}
+
+	public List<PresetFilter> FilterPresetFilterByPresetID(List<PresetFilter> list, int presetID) {
+		var result = new List<PresetFilter> ();
+		foreach (PresetFilter pf in list) {
+
+		}
+		return  result;
+	}
 
 	public void LoadPreset() {
 		LoadPreset (savePath);
@@ -51,8 +77,7 @@ public class PresetsManager  {
 	}
 
 	public void SavePreset(string path) {
-		Debug.Log ("GetAssetPath:=" +AssetDatabase.GetAssetPath (Presets) );
-	
+		
 		if (m_presets == null)
 			return;
 
@@ -69,7 +94,6 @@ public class PresetsManager  {
 		return Presets.FindByID(presetID);
 	}
 
-
 	public PresetInfo CreateNewPreset(string name) {
 		if (name == null || name.Length == 0)
 			return null;
@@ -80,9 +104,7 @@ public class PresetsManager  {
 		PresetInfo preset = new PresetInfo (name, m_presets.MaxPresetID + 1);
 		return preset;
 	}
-
-
-
+		
 	public void AddPreset(PresetInfo info) {
 		if (info != null) {
 			Presets.Add (info);
@@ -92,26 +114,32 @@ public class PresetsManager  {
 	public void RemovePreset(PresetInfo info) {
 		Presets.Remove (info);
 	}
-
-
+		
 	const string UniqueNamePrefix = "New Preset";
-	public string UniqueNameForPreset() {
-		if (Count == 0) {
-			return UniqueNamePrefix;
-		}
+	const string UniqueUntitledNamePrefix = "Untitled";
 
-		int index = 1;
+	public string UniqueNameForNewPreset() {
+		return UniqueNameForPreset (UniqueNamePrefix);
+	}
 
-		string name = UniqueNameForPreset (UniqueNamePrefix, index);
+	public string UniqueNameForUntitledPreset() {
+		return UniqueNameForPreset (UniqueUntitledNamePrefix);
+	}
+
+	public string UniqueNameForPreset(string prefix) {
+		int index = 0;
+		string name = FormatNameForPreset (prefix, index);
 
 		while (Presets.ContainPresetInfoWithName (name)) {
 			index++;
-			name = UniqueNameForPreset (UniqueNamePrefix, index);
+			name = FormatNameForPreset (prefix, index);
 		}
 		return name;
 	}
 
-	private string UniqueNameForPreset(string name, int index) {
+	private string FormatNameForPreset(string name, int index) {
+		if (index == 0)
+			return name;
 		return string.Format ("{0} {1}", name, index);
 	}
 		

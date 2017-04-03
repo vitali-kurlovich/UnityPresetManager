@@ -6,6 +6,7 @@ using UnityEngine;
 [DisallowMultipleComponent]
 [ExecuteInEditMode]
 public class PresetFilter : MonoBehaviour {
+	
 	[SerializeField]
 	private List<GameObjectPresetPair> m_presets;
 	[SerializeField]
@@ -20,7 +21,6 @@ public class PresetFilter : MonoBehaviour {
 		}
 
 		set {
-
 			if (value == null) {
 				m_activePreset = null;
 				return;
@@ -32,7 +32,6 @@ public class PresetFilter : MonoBehaviour {
 					return;
 				}
 			}
-				
 			m_activePreset = new GameObjectPresetPair (null, value.PresetID);
 		}
 	}
@@ -42,6 +41,23 @@ public class PresetFilter : MonoBehaviour {
 			if (m_activePreset == null)
 				return null;
 			return m_activePreset.Preset;
+		}
+	}
+
+
+	public List<int> SupportedPresetIDs {
+		get {
+
+			if (m_presets == null || m_presets.Count < 1)
+				return null;
+
+			List<int> ids = new List<int> ();
+
+			foreach (GameObjectPresetPair pair in m_presets) {
+				ids.Add (pair.PresetID);
+			}
+
+			return ids;
 		}
 	}
 		
@@ -61,6 +77,7 @@ public class PresetFilter : MonoBehaviour {
 			m_activePreset = new GameObjectPresetPair (null, info.PresetID);
 		}
 	}
+
 
 	public void SetPreset(GameObjectPreset preset, PresetInfo info) {
 
