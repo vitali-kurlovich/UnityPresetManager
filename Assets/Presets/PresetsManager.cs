@@ -104,6 +104,13 @@ public class PresetsManager  {
 		PresetInfo preset = new PresetInfo (name, m_presets.MaxPresetID + 1);
 		return preset;
 	}
+
+	public bool ContainPresetInfoWithName(string name) {
+		if (name == null)
+			return false;
+
+		return Presets.ContainPresetInfoWithName (name);
+	}
 		
 	public void AddPreset(PresetInfo info) {
 		if (info != null) {

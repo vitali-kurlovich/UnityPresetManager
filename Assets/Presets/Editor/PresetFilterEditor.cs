@@ -7,48 +7,48 @@ using UnityEditor;
 public class PresetFilterEditor : Editor {
 
 	//GUILayout.Button("Create")
-
-
-
 	public override void OnInspectorGUI()
 	{
-		base.OnInspectorGUI();
+		//base.OnInspectorGUI();
 
 		var manager = PresetsManager.sharedManager ();
 
 		PresetFilter filter = (PresetFilter)target;
 		var currentPresetInfo = filter.ActivePresetInfo;
 
-		string[] options = new string[manager.Count];
+		string[] options = new string[manager.Count + 2];
+		options [0] = "None";
+		options [manager.Count+1] = "New";
 
 		int currentPresetIndex = 0; 
 		for (int index = 0; index < manager.Count; ++index) {
 			var info = manager.PresetAtIndex (index);
-			options [index] = info.PresetName;
+			options [index+1] = info.PresetName;
 			if (currentPresetInfo != null && info.PresetID == currentPresetInfo.PresetID) {
-				currentPresetIndex = index;
+				currentPresetIndex = index + 1;
 			}
 		}
 			
 		EditorGUILayout.BeginVertical ();
 		EditorGUILayout.BeginHorizontal();
 
-		if (manager.Count > 1) {
 
-			int popupIndex = EditorGUILayout.Popup ("Preset:", 
+		int popupIndex = EditorGUILayout.Popup ("Preset:", 
 				                 currentPresetIndex, options, EditorStyles.popup);
 
 
-			if (popupIndex != currentPresetIndex) {
-				currentPresetInfo = manager.PresetAtIndex (popupIndex);
+		if (popupIndex != currentPresetIndex) {
+			if (popupIndex == 0) {
+				filter.ActivePresetInfo = null;
+			} else if (popupIndex == manager.Count + 1) {
+				NewPrestWizard.ShowNewPrestWizard ();
+			} else {
+				currentPresetInfo = manager.PresetAtIndex (popupIndex - 1);
 				filter.ActivePresetInfo = currentPresetInfo;
 			}
-		} else {
-		
-			if (GUILayout.Button ("New Preset")) {
-				//filter.applyPreset (filter.ActivePreset);
-			}
+
 		}
+		
 			
 		EditorGUILayout.EndHorizontal();
 		EditorGUILayout.BeginHorizontal();
@@ -69,10 +69,8 @@ public class PresetFilterEditor : Editor {
 
 		GUI.enabled = true;
 
-
 		EditorGUILayout.EndHorizontal();
 		EditorGUILayout.EndVertical ();
-
 	}
 
 }

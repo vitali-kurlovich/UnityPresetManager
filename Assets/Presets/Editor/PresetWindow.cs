@@ -49,12 +49,17 @@ public class PresetWindow : EditorWindow {
 			
 		EditorGUILayout.EndScrollView ();
 		EditorGUILayout.BeginHorizontal ();
+
 		GUILayout.FlexibleSpace ();
 		if (GUILayout.Button ("New",  GUILayout.MinWidth(80))) {
-			
+
+
+			NewPrestWizard.ShowNewPrestWizard ();
+			/*
 			var info = manager.CreateNewPreset (manager.UniqueNameForNewPreset());
 			manager.AddPreset (info);
 			manager.SavePreset ();
+			*/
 		}
 
 		EditorGUILayout.EndHorizontal ();
